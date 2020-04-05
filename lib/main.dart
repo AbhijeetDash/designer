@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 void main() {
   runApp(MyApp());
@@ -73,21 +74,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   Draggable<String>(
                     data: "circle",
                     child: CustomPaint(
-                      painter: ShapePainter(shape: "circle", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "circle", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
                       ),
                     ),
                     feedback: CustomPaint(
-                      painter: ShapePainter(shape: "circle", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "circle", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
                       ),
                     ),
                     childWhenDragging: CustomPaint(
-                      painter: ShapePainter(shape: "circle", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "circle", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
@@ -104,21 +105,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   Draggable<String>(
                     data: "rect",
                     child: CustomPaint(
-                      painter: ShapePainter(shape: "rect", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "rect", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
                       ),
                     ),
                     feedback: CustomPaint(
-                      painter: ShapePainter(shape: "rect", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "rect", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
                       ),
                     ),
                     childWhenDragging: CustomPaint(
-                      painter: ShapePainter(shape: "rect", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "rect", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
@@ -135,21 +136,21 @@ class _MyHomePageState extends State<MyHomePage> {
                   Draggable<String>(
                     data: "tri",
                     child: CustomPaint(
-                      painter: ShapePainter(shape: "tri", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "tri", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
                       ),
                     ),
                     feedback: CustomPaint(
-                      painter: ShapePainter(shape: "tri", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "tri", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
                       ),
                     ),
                     childWhenDragging: CustomPaint(
-                      painter: ShapePainter(shape: "tri", sx: 30, sy: 30),
+                      painter: ShapePainter(shape: "tri", sx: 60, sy: 60, color: Colors.deepOrange),
                       child: Container(
                         width: 60,
                         height: 60,
@@ -161,7 +162,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         _y = details.offset.dy - 55;
                       });
                     },
-                  )
+                  ),
+                  //Add new to platelets..
                 ],
               ),
             ),
@@ -184,7 +186,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 sy: sy,
                                 y: _y,
                                 x: _x,
-                                indexValue: indexValue));
+                                indexValue: indexValue,
+                                color: Colors.deepOrange,));
                           });
                           break;
                         case "rect":
@@ -194,7 +197,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 sy: sy,
                                 y: _y,
                                 x: _x,
-                                indexValue: indexValue));
+                                indexValue: indexValue,
+                                color: Colors.deepOrange,));
                           });
                           break;
                         case "tri":
@@ -204,7 +208,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                 sy: sy,
                                 y: _y,
                                 x: _x,
-                                indexValue: indexValue));
+                                indexValue: indexValue,
+                                color: Colors.deepOrange,));
                           });
                         break;
                       }
@@ -222,6 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
 class _CustomCircle extends StatefulWidget {
   double sx, sy, _y, _x;
   final int indexValue;
+  Color color;
   _CustomCircle({
     Key key,
     @required this.indexValue,
@@ -229,6 +235,7 @@ class _CustomCircle extends StatefulWidget {
     @required this.sy,
     @required double y,
     @required double x,
+    @required this.color
   })  : _y = y,
         _x = x,
         super(key: key);
@@ -240,11 +247,15 @@ class __CustomCircleState extends State<_CustomCircle> {
   Widget prop = Container();
   TextEditingController xaxis;
   TextEditingController yaxis;
+  TextEditingController widt;
+  TextEditingController heig;
 
   @override
   void initState() {
-    xaxis = TextEditingController(); 
-    yaxis = TextEditingController(); 
+    xaxis = TextEditingController(); xaxis.text = widget._x.toString().split(".")[0];
+    yaxis = TextEditingController(); yaxis.text = widget._y.toString().split(".")[0];
+    widt = TextEditingController(); widt.text = widget.sx.toString();
+    heig = TextEditingController(); heig.text = widget.sy.toString();
     super.initState();
   }
 
@@ -254,7 +265,6 @@ class __CustomCircleState extends State<_CustomCircle> {
     double height = MediaQuery.of(context).size.height;
     return Stack(
       children: <Widget>[
-        Align(alignment: Alignment.centerRight, child: prop),
         Positioned(
           key: Key("${widget.sx}${widget.sy}"),
           top: widget._y,
@@ -262,56 +272,213 @@ class __CustomCircleState extends State<_CustomCircle> {
           child: FlatButton(
             onPressed: () {
               setState(() {
-                xaxis.text = widget._x.toString().split(".")[0];
-                yaxis.text = widget._y.toString().split(".")[0];
-                prop = Container(
-                  width: 300,
+                prop = prop = Container(
+                  width: 350,
                   height: height,
                   alignment: Alignment.center,
                   color: Colors.white,
-                  child: Column(
+                  child: ListView(
                     children: <Widget>[
-                      SizedBox(height: 10,),
-                      Text("Position", style: TextStyle(fontSize: 25)),
-                      SizedBox(height: 10,),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: TextField(
-                          controller: xaxis,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "x-Axis",
-                            labelStyle: TextStyle(fontSize: 15)
-                          ),
+                      SizedBox(height: 10),
+                      Text("Position", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: xaxis,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "x-Axis",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget._x += 1;
+                                      xaxis.text = widget._x.toString().split(".")[0];
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget._x -= 1;
+                                      xaxis.text = widget._x.toString().split(".")[0];
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: TextField(
-                          controller: yaxis,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: "x-Axis",
-                            labelStyle: TextStyle(fontSize: 15)
-                          ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: yaxis,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "y-Axis",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget._y -= 1;
+                                      yaxis.text = widget._y.toString().split(".")[0];
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget._y += 1;
+                                      yaxis.text = widget._y.toString().split(".")[0];
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ),
-                      DecoPress(
-                        onPressed: () {
-                          setState(() {
-                            prop = Container();
-                          });
-                        },
+                      Text("Size", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: widt,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Width",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget.sx += 1;
+                                      widt.text = widget.sx.toString();
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget.sx -= 1;
+                                      widt.text = widget.sx.toString();
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: heig,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Height",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget.sy += 1;
+                                      heig.text = widget.sy.toString();
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget.sy -= 1;
+                                      heig.text = widget.sy.toString();
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Text("Colour", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      ColorPicker(
+                        enableAlpha: true,
+                        colorPickerWidth: 200,
+                        paletteType: PaletteType.rgb,
+                        pickerColor: Colors.orange, onColorChanged: (color){
+                        setState(() {
+                          widget.color = color;
+                        });
+                      }),
+                      Center(
+                        child: DecoPress(
+                          onPressed: () {
+                            setState(() {
+                              widget._x = double.parse(xaxis.text);
+                              widget._y = double.parse(yaxis.text);
+                              widget.sx = double.parse(widt.text);
+                              widget.sy = double.parse(heig.text);
+                              prop = Container();
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 20)
                     ],
                   ),
                 );
               });
             },
             child: CustomPaint(
-              size: Size(widget.sx / 2, widget.sy / 2),
-              painter: ShapePainter(
-                  shape: "circle", sx: widget.sx / 2, sy: widget.sy / 2),
+              size: Size(widget.sx, widget.sy),
+              foregroundPainter: ShapePainter(
+                  shape: "circle", sx: widget.sx, sy: widget.sy, color: widget.color),
               child: Container(
                 width: widget.sx,
                 height: widget.sy,
@@ -319,6 +486,7 @@ class __CustomCircleState extends State<_CustomCircle> {
             ),
           ),
         ),
+        Align(alignment: Alignment.centerRight, child: prop),
       ],
     );
   }
@@ -327,6 +495,7 @@ class __CustomCircleState extends State<_CustomCircle> {
 class _CustomRect extends StatefulWidget {
   double sx, sy, _y, _x;
   final int indexValue;
+  Color color = Colors.orange;
   _CustomRect({
     Key key,
     @required this.indexValue,
@@ -334,6 +503,7 @@ class _CustomRect extends StatefulWidget {
     @required this.sy,
     @required double y,
     @required double x,
+    @required this.color
   })  : _y = y,
         _x = x,
         super(key: key);
@@ -344,6 +514,19 @@ class _CustomRect extends StatefulWidget {
 
 class __CustomRectState extends State<_CustomRect> {
   Widget prop = Container();
+  TextEditingController xaxis;
+  TextEditingController yaxis;
+  TextEditingController widt;
+  TextEditingController heig;
+
+  @override
+  void initState() {
+    xaxis = TextEditingController(); xaxis.text = widget._x.toString().split(".")[0];
+    yaxis = TextEditingController(); yaxis.text = widget._y.toString().split(".")[0];
+    widt = TextEditingController(); widt.text = widget.sx.toString();
+    heig = TextEditingController(); heig.text = widget.sy.toString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -351,7 +534,6 @@ class __CustomRectState extends State<_CustomRect> {
     double height = MediaQuery.of(context).size.height;
     return Stack(
       children: <Widget>[
-        Align(alignment: Alignment.centerRight, child: prop),
         Positioned(
           key: Key("${widget.sx}${widget.sy}"),
           top: widget._y,
@@ -359,25 +541,212 @@ class __CustomRectState extends State<_CustomRect> {
           child: FlatButton(
             onPressed: () {
               setState(() {
-                prop = Container(
-                  width: 300,
+                prop = prop = Container(
+                  width: 350,
                   height: height,
                   alignment: Alignment.center,
                   color: Colors.white,
-                  child: DecoPress(
-                    onPressed: () {
-                      setState(() {
-                        prop = Container();
-                      });
-                    },
+                  child: ListView(
+                    children: <Widget>[
+                      SizedBox(height: 10),
+                      Text("Position", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: xaxis,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "x-Axis",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget._x += 1;
+                                      xaxis.text = widget._x.toString().split(".")[0];
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget._x -= 1;
+                                      xaxis.text = widget._x.toString().split(".")[0];
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: yaxis,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "y-Axis",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget._y -= 1;
+                                      yaxis.text = widget._y.toString().split(".")[0];
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget._y += 1;
+                                      yaxis.text = widget._y.toString().split(".")[0];
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Text("Size", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: widt,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Width",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget.sx += 1;
+                                      widt.text = widget.sx.toString();
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget.sx -= 1;
+                                      widt.text = widget.sx.toString();
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: heig,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Height",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget.sy += 1;
+                                      heig.text = widget.sy.toString();
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget.sy -= 1;
+                                      heig.text = widget.sy.toString();
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Text("Colour", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      ColorPicker(
+                        colorPickerWidth: 200,
+                        paletteType: PaletteType.rgb,
+                        pickerColor: Colors.deepOrange, onColorChanged: (color){
+                        setState(() {
+                          widget.color = color;
+                        });
+                      }),
+                      Center(
+                        child: DecoPress(
+                          onPressed: () {
+                            setState(() {
+                              widget._x = double.parse(xaxis.text);
+                              widget._y = double.parse(yaxis.text);
+                              widget.sx = double.parse(widt.text);
+                              widget.sy = double.parse(heig.text);
+                              prop = Container();
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 20)
+                    ],
                   ),
                 );
               });
             },
             child: CustomPaint(
-              size: Size(widget.sx / 2, widget.sy / 2),
-              painter: ShapePainter(
-                  shape: "rect", sx: widget.sx / 2, sy: widget.sy / 2),
+              size: Size(widget.sx, widget.sy),
+              foregroundPainter: ShapePainter(
+                  shape: "rect", sx: widget.sx, sy: widget.sy, color: widget.color),
               child: Container(
                 width: widget.sx,
                 height: widget.sy,
@@ -385,6 +754,7 @@ class __CustomRectState extends State<_CustomRect> {
             ),
           ),
         ),
+        Align(alignment: Alignment.centerRight, child: prop),
       ],
     );
   }
@@ -393,6 +763,7 @@ class __CustomRectState extends State<_CustomRect> {
 class _CustomTri extends StatefulWidget {
   double sx, sy, _y, _x;
   final int indexValue;
+  Color color = Colors.orange;
   _CustomTri({
     Key key,
     @required this.indexValue,
@@ -400,6 +771,7 @@ class _CustomTri extends StatefulWidget {
     @required this.sy,
     @required double y,
     @required double x,
+    @required this.color
   })  : _y = y,
         _x = x,
         super(key: key);
@@ -410,6 +782,19 @@ class _CustomTri extends StatefulWidget {
 
 class __CustomTriState extends State<_CustomTri> {
   Widget prop = Container();
+  TextEditingController xaxis;
+  TextEditingController yaxis;
+  TextEditingController widt;
+  TextEditingController heig;
+
+  @override
+  void initState() {
+    xaxis = TextEditingController(); xaxis.text = widget._x.toString().split(".")[0];
+    yaxis = TextEditingController(); yaxis.text = widget._y.toString().split(".")[0];
+    widt = TextEditingController(); widt.text = widget.sx.toString();
+    heig = TextEditingController(); heig.text = widget.sy.toString();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -417,7 +802,6 @@ class __CustomTriState extends State<_CustomTri> {
     double height = MediaQuery.of(context).size.height;
     return Stack(
       children: <Widget>[
-        Align(alignment: Alignment.centerRight, child: prop),
         Positioned(
           key: Key("${widget.sx}${widget.sy}"),
           top: widget._y,
@@ -425,25 +809,212 @@ class __CustomTriState extends State<_CustomTri> {
           child: FlatButton(
             onPressed: () {
               setState(() {
-                prop = Container(
-                  width: 300,
+                prop = prop = Container(
+                  width: 350,
                   height: height,
                   alignment: Alignment.center,
                   color: Colors.white,
-                  child: DecoPress(
-                    onPressed: () {
-                      setState(() {
-                        prop = Container();
-                      });
-                    },
+                  child: ListView(
+                    children: <Widget>[
+                      SizedBox(height: 10),
+                      Text("Position", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: xaxis,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "x-Axis",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget._x += 1;
+                                      xaxis.text = widget._x.toString().split(".")[0];
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget._x -= 1;
+                                      xaxis.text = widget._x.toString().split(".")[0];
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: yaxis,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "y-Axis",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget._y -= 1;
+                                      yaxis.text = widget._y.toString().split(".")[0];
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget._y += 1;
+                                      yaxis.text = widget._y.toString().split(".")[0];
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Text("Size", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: widt,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Width",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget.sx += 1;
+                                      widt.text = widget.sx.toString();
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget.sx -= 1;
+                                      widt.text = widget.sx.toString();
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.max,
+                          children: <Widget>[
+                            Container(
+                              width: 250,
+                              child: TextField(
+                                controller: heig,
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Height",
+                                  labelStyle: TextStyle(fontSize: 15)
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 50,
+                              height: 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  IconButton(icon: Icon(Icons.arrow_drop_up), onPressed: (){
+                                    setState(() {
+                                      widget.sy += 1;
+                                      heig.text = widget.sy.toString();
+                                    });
+                                  }),
+                                  IconButton(icon: Icon(Icons.arrow_drop_down), onPressed: (){
+                                    setState(() {
+                                      widget.sy -= 1;
+                                      heig.text = widget.sy.toString();
+                                    });
+                                  })
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Text("Colour", style: TextStyle(fontSize: 25), textAlign: TextAlign.center,),
+                      ColorPicker(
+                        colorPickerWidth: 200,
+                        paletteType: PaletteType.rgb,
+                        pickerColor: Colors.deepOrange, onColorChanged: (color){
+                        setState(() {
+                          widget.color = color;
+                        });
+                      }),
+                      Center(
+                        child: DecoPress(
+                          onPressed: () {
+                            setState(() {
+                              widget._x = double.parse(xaxis.text);
+                              widget._y = double.parse(yaxis.text);
+                              widget.sx = double.parse(widt.text);
+                              widget.sy = double.parse(heig.text);
+                              prop = Container();
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 20)
+                    ],
                   ),
                 );
               });
             },
             child: CustomPaint(
-              size: Size(widget.sx / 2, widget.sy / 2),
-              painter: ShapePainter(
-                  shape: "tri", sx: widget.sx / 2, sy: widget.sy / 2),
+              size: Size(widget.sx, widget.sy),
+              foregroundPainter: ShapePainter(
+                  shape: "tri", sx: widget.sx, sy: widget.sy, color: widget.color),
               child: Container(
                 width: widget.sx,
                 height: widget.sy,
@@ -451,6 +1022,7 @@ class __CustomTriState extends State<_CustomTri> {
             ),
           ),
         ),
+        Align(alignment: Alignment.centerRight, child: prop),
       ],
     );
   }
@@ -478,29 +1050,31 @@ class DecoPress extends StatelessWidget {
 class ShapePainter extends CustomPainter {
   final String shape;
   final double sx, sy;
-  ShapePainter({@required this.shape, this.sx, this.sy});
+  Color color = Colors.black;
+  ShapePainter({@required this.shape, this.sx, this.sy, this.color});
+  
 
   @override
   void paint(Canvas canvas, Size size) {
-    var paint = Paint();
+    var pint = Paint()..color = color;
     var center = Offset(size.width / 2, size.height / 2);
-    paint.color = Colors.deepOrange;
     switch (shape) {
-      case "circle":
-        canvas.drawCircle(center, sx, paint);
-        break;
       case "rect":
-        var rect = Rect.fromLTRB(0, 0, size.width, size.height);
-        canvas.drawRect(rect, paint);
+        var rect = Rect.fromLTRB(0, 0, sx, sy);
+        canvas.drawRect(rect, pint);
         break;
       case "tri":
         var path = Path();
         path.addPolygon([
-          Offset(size.width / 2, 0),
-          Offset(0, size.height),
-          Offset(size.width, size.height)
+          Offset(sx / 2, 0),
+          Offset(0, sy),
+          Offset(sx, sy)
         ], true);
-        canvas.drawPath(path, paint);
+        canvas.drawPath(path, pint);
+        break;
+      case "circle":
+        var rect = Rect.fromLTRB(0, 0, sx, sy);
+        canvas.drawOval(rect, pint);
         break;
     }
   }

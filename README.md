@@ -1,3 +1,3 @@
 # designer
 
-A flutter project which is about to be like MS Paint.
+A flutter project implementing paint application with the help of Custom Pait..

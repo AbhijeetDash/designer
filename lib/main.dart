@@ -342,7 +342,8 @@ class _CustomText extends StatefulWidget {
 
 class __CustomTextState extends State<_CustomText> {
   Widget prop = Container();
-  TextEditingController xaxis, yaxis, widt;
+  TextEditingController xaxis, yaxis, widt, tdata;
+  String textdata = "Text";
 
   @override
   void initState() {
@@ -372,6 +373,17 @@ class __CustomTextState extends State<_CustomText> {
                       color: Colors.white,
                       child: ListView(
                         children: <Widget>[
+                          SizedBox(height: 10),
+                          Container(
+                            width: 250,
+                            child: TextField(
+                              controller: tdata,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Width",
+                                  labelStyle: TextStyle(fontSize: 15)),
+                            ),
+                          ),
                           SizedBox(height: 10),
                           Text(
                             "Position",
@@ -585,6 +597,7 @@ class __CustomTextState extends State<_CustomText> {
                               onPressed: () {
                                 setState(() {
                                   prop = Container();
+                                  textdata = tdata.text;
                                 });
                               },
                             ),
@@ -594,7 +607,7 @@ class __CustomTextState extends State<_CustomText> {
                     );
                   });
                 },
-                child: Text("Text",
+                child: Text(textdata,
                     style: TextStyle(
                         decoration: TextDecoration.none,
                         fontSize: widget.dSize,
@@ -604,6 +617,8 @@ class __CustomTextState extends State<_CustomText> {
     );
   }
 }
+
+//Stateull Circle
 
 class _CustomCircle extends StatefulWidget {
   double sx, sy, _y, _x;
@@ -624,7 +639,7 @@ class _CustomCircle extends StatefulWidget {
   __CustomCircleState createState() => __CustomCircleState();
 }
 
-//Edit here
+
 class __CustomCircleState extends State<_CustomCircle> {
   Widget prop = Container();
   TextEditingController xaxis;
@@ -920,6 +935,7 @@ class __CustomCircleState extends State<_CustomCircle> {
                               widget._y = double.parse(yaxis.text);
                               widget.sx = double.parse(widt.text);
                               widget.sy = double.parse(heig.text);
+
                               prop = Container();
                             });
                           },
@@ -951,6 +967,8 @@ class __CustomCircleState extends State<_CustomCircle> {
   }
 }
 
+
+//StateFull Rectangle
 class _CustomRect extends StatefulWidget {
   double sx, sy, _y, _x;
   final int indexValue;
@@ -1296,6 +1314,8 @@ class __CustomRectState extends State<_CustomRect> {
   }
 }
 
+
+//StateFull Triangle
 class _CustomTri extends StatefulWidget {
   double sx, sy, _y, _x;
   final int indexValue;
@@ -1641,6 +1661,8 @@ class __CustomTriState extends State<_CustomTri> {
   }
 }
 
+
+//Styled Button
 class DecoPress extends StatelessWidget {
   final GestureTapCallback onPressed;
 
@@ -1660,6 +1682,7 @@ class DecoPress extends StatelessWidget {
   }
 }
 
+//Shape Painter
 class ShapePainter extends CustomPainter {
   final String shape;
   final double sx, sy;
